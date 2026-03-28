@@ -1,0 +1,21 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html:Z
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:11.8
+    env_file:
+      - .env
+    volumes:
+      - db_daten:/var/lib/mysql:Z
+
+volumes:
+  db_daten:
