@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "titel": "Fröhlicher Sonnentag",
+        "beschreibung": "Ein handgemaltes Kunstwerk mit Wachsmalkreiden. Zeigt eine strahlende Sonne über einer Blumenwiese.",
+        "preis": 14.50,
+        "bild_name": "sonnentag.png",
+        "status": "verfuegbar"
+    },
+    {
+        "id": 2,
+        "titel": "Drache Friedolin",
+        "beschreibung": "Friedolin der Drache in leuchtenden Farben. Perfekt für jedes Kinderzimmer.",
+        "preis": 19.90,
+        "bild_name": "drache.png",
+        "status": "verfuegbar"
+    },
+    {
+        "id": 3,
+        "titel": "Weltraum Abenteuer",
+        "beschreibung": "Eine Reise zu den Sternen mit dieser Rakete aus Filzstift-Farben.",
+        "preis": 12.00,
+        "bild_name": "weltraum.png",
+        "status": "verfuegbar"
+    }
+]
