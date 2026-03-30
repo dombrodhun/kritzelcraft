@@ -1,0 +1,75 @@
+:root {
+    --primary-color: #ff6b6b;
+    --secondary-color: #4ecdc4;
+    --accent-color: #ffe66d;
+    --bg-light: #f7fff7;
+    --text-dark: #2f3e46;
+    --card-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    --card-hover-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    font-family: 'Outfit', sans-serif;
+}
+
+.navbar {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.hero-section {
+    padding: 100px 0;
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    border-radius: 0 0 50px 50px;
+    margin-bottom: 50px;
+}
+
+.card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-hover-shadow);
+}
+
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
+    background: #fff;
+    padding: 15px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background-color: #ff5252;
+}
+
+.offcanvas-header {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.cart-item {
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+
+.cart-item img {
+    width: 60px;
+    border-radius: 10px;
+}
