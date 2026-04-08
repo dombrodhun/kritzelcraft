@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
         cart.push(item);
         updateCartUI();
 
-
         const cartOffcanvas = new bootstrap.Offcanvas(document.getElementById('cartOffcanvas'));
         cartOffcanvas.show();
     }

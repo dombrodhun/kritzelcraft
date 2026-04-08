@@ -1,98 +1,40 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kritzelcraft | Echte Kinderkunst für dein Zuhause</title>
+<?php
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+declare(strict_types=1);
 
-    <!-- Bootstrap CSS & Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+/**
+ * Front-Controller
+ */
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+require_once __DIR__ . '/../src/Core/Container.php';
+require_once __DIR__ . '/../src/Core/Router.php';
+require_once __DIR__ . '/../src/Controller/BaseController.php';
+require_once __DIR__ . '/../src/Controller/HomeController.php';
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg sticky-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="#">
-                <i class="bi bi-palette-fill me-2"></i>Kritzelcraft
-            </a>
-            <button class="btn btn-outline-primary position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas">
-                <i class="bi bi-bag-heart-fill"></i>
-                <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
-            </button>
-        </div>
-    </nav>
+use App\Core\Container;
+use App\Core\Router;
+use App\Controller\HomeController;
 
-    <!-- Hero Section -->
-    <header class="hero-section text-center">
-        <div class="container">
-            <h1 class="display-3 fw-bold mb-3">Verwandle Kritzeleien in <span class="text-primary">Echtes Karma</span>.</h1>
-            <p class="lead mb-4">Entdecke einzigartige Kunstwerke, gemalt von einem kleinen Künstler für große Herzen. Jedes Stück ist ein Unikat.</p>
-            <a href="#galerie" class="btn btn-primary btn-lg px-5">Jetzt stöbern</a>
-        </div>
-    </header>
+// Initialisiere DI-Container
+$container = new Container();
 
-    <!-- Galerie Section -->
-    <main id="galerie" class="container mb-5">
-        <div class="row mb-5">
-            <div class="col-12 text-center">
-                <h2 class="fw-bold">Aktuelle Unikate</h2>
-                <hr class="w-25 mx-auto text-primary border-3">
-            </div>
-        </div>
+// Registriere Controller im Container
+$container->set(HomeController::class, function (Container $c) {
+    return new HomeController();
+});
 
-        <!-- Artwork Grid (per JS) -->
-        <div id="artwork-grid" class="row">
-            <div class="col-12 text-center py-5">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Laden...</span>
-                </div>
-            </div>
-        </div>
-    </main>
+// Initialisiere Router und definiere Routen
+$router = new Router();
 
-    <!-- Warenkorb Offcanvas -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title fw-bold" id="cartOffcanvasLabel">
-                <i class="bi bi-bag-heart-fill me-2"></i>Dein Warenkorb
-            </h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <ul id="cart-items" class="list-group list-group-flush mb-4">
-                <!-- Warenkorb-Items -->
-            </ul>
+$router->get('/', HomeController::class . '@index');
 
-            <div class="d-grid gap-2 border-top pt-4">
-                <div class="d-flex justify-content-between mb-3 px-2">
-                    <span class="h5 fw-bold">Gesamtsumme:</span>
-                    <span class="h5 fw-bold"><span id="cart-total">0.00</span> €</span>
-                </div>
-                <button class="btn btn-primary btn-lg">Zur Kasse</button>
-            </div>
-        </div>
-    </div>
+// Verarbeite Anfrage
+$uri = $_SERVER['REQUEST_URI'];
+$method = $_SERVER['REQUEST_METHOD'];
 
-    <!-- Footer -->
-    <footer class="bg-white border-top py-4 mt-5">
-        <div class="container text-center">
-            <p class="text-muted small mb-0">&copy; 2026 Kritzelcraft - Ein Uni-Projekt für die Demonstration von Unikat-Shops.</p>
-        </div>
-    </footer>
-
-    <!-- Bootstrap Bundle JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <!-- Custom JS -->
-    <script src="js/app.js"></script>
-</body>
-</html>
+try {
+    $router->dispatch($uri, $method, $container);
+} catch (\Exception $e) {
+    http_response_code(500);
+    echo "Ein interner Fehler ist aufgetreten: " . $e->getMessage();
+}
