@@ -6,8 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let cart = [];
 
-
-    fetch('data/kunstwerke.json')
+    fetch('/api/kunstwerke')
         .then(response => response.json())
         .then(artworks => {
             renderArtworks(artworks);
@@ -32,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `).join('');
-
 
         document.querySelectorAll('.buy-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -79,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </button>
             </li>
         `).join('');
-
 
         document.querySelectorAll('.remove-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
