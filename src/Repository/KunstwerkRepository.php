@@ -19,16 +19,16 @@ class KunstwerkRepository
     }
 
     /**
-     * Hole alle verfügbaren Kunstwerke aus der Datenbank.
+     * Holt alle verfügbaren Kunstwerke aus der Datenbank.
      */
     public function getAll(): array
     {
-        $stmt = $this->pdo->query("SELECT * FROM kunstwerke WHERE status = 'verfuegbar'");
+        $stmt = $this->pdo->query("SELECT * FROM kunstwerke");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
-     * Hole ein einzelnes Kunstwerk anhand der ID.
+     * Holt ein einzelnes Kunstwerk anhand der ID.
      */
     public function getById(int $id): ?array
     {
