@@ -13,15 +13,19 @@ require_once __DIR__ . '/../src/Core/Router.php';
 require_once __DIR__ . '/../src/Controller/BaseController.php';
 require_once __DIR__ . '/../src/Controller/HomeController.php';
 require_once __DIR__ . '/../src/Controller/WarenkorbController.php';
+require_once __DIR__ . '/../src/Controller/AdminController.php';
 require_once __DIR__ . '/../src/Repository/KunstwerkRepository.php';
 require_once __DIR__ . '/../src/Repository/WarenkorbRepository.php';
+require_once __DIR__ . '/../src/Repository/BenutzerRepository.php';
 
 use App\Core\Container;
 use App\Core\Router;
 use App\Controller\HomeController;
 use App\Controller\WarenkorbController;
+use App\Controller\AdminController;
 use App\Repository\KunstwerkRepository;
 use App\Repository\WarenkorbRepository;
+use App\Repository\BenutzerRepository;
 
 // Initialisiere DI-Container
 $container = new Container();
@@ -44,6 +48,10 @@ $container->set(WarenkorbRepository::class, function (Container $c) {
     return new WarenkorbRepository($c->get(PDO::class));
 });
 
+$container->set(BenutzerRepository::class, function (Container $c) {
+    return new BenutzerRepository($c->get(PDO::class));
+});
+
 // Registriere Controller im Container
 $container->set(HomeController::class, function (Container $c) {
     return new HomeController($c->get(KunstwerkRepository::class));
@@ -51,6 +59,10 @@ $container->set(HomeController::class, function (Container $c) {
 
 $container->set(WarenkorbController::class, function (Container $c) {
     return new WarenkorbController($c->get(WarenkorbRepository::class));
+});
+
+$container->set(AdminController::class, function (Container $c) {
+    return new AdminController($c->get(BenutzerRepository::class), $c->get(KunstwerkRepository::class));
 });
 
 // Initialisiere Router und definiere Routen
@@ -63,6 +75,16 @@ $router->get('/api/kunstwerke', HomeController::class . '@apiIndex');
 $router->get('/api/warenkorb', WarenkorbController::class . '@index');
 $router->post('/api/warenkorb/add', WarenkorbController::class . '@add');
 $router->post('/api/warenkorb/remove', WarenkorbController::class . '@remove');
+
+// Admin Routen
+$router->get('/admin/login', AdminController::class . '@login');
+$router->post('/admin/login', AdminController::class . '@login');
+$router->get('/admin/logout', AdminController::class . '@logout');
+$router->get('/admin/dashboard', AdminController::class . '@dashboard');
+$router->post('/admin/upload', AdminController::class . '@upload');
+$router->get('/admin/edit', AdminController::class . '@edit');
+$router->post('/admin/edit', AdminController::class . '@update');
+$router->post('/admin/delete', AdminController::class . '@delete');
 
 // Verarbeite Anfrage
 $uri = $_SERVER['REQUEST_URI'];

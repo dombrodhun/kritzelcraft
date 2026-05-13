@@ -38,4 +38,38 @@ class KunstwerkRepository
 
         return $result ?: null;
     }
+
+    /**
+     * Erstellt ein neues Kunstwerk in der Datenbank.
+     */
+    public function create(string $titel, string $beschreibung, float $preis, string $bildName): void
+    {
+        $stmt = $this->pdo->prepare("
+            INSERT INTO kunstwerke (titel, beschreibung, preis, bild_name, status) 
+            VALUES (?, ?, ?, ?, 'verfuegbar')
+        ");
+        $stmt->execute([$titel, $beschreibung, $preis, $bildName]);
+    }
+
+    /**
+     * Aktualisiert ein bestehendes Kunstwerk.
+     */
+    public function update(int $id, string $titel, string $beschreibung, float $preis): void
+    {
+        $stmt = $this->pdo->prepare("
+            UPDATE kunstwerke 
+            SET titel = ?, beschreibung = ?, preis = ? 
+            WHERE id = ?
+        ");
+        $stmt->execute([$titel, $beschreibung, $preis, $id]);
+    }
+
+    /**
+     * Löscht ein Kunstwerk aus der Datenbank.
+     */
+    public function delete(int $id): void
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM kunstwerke WHERE id = ?");
+        $stmt->execute([$id]);
+    }
 }

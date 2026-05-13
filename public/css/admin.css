@@ -1,0 +1,14 @@
+/* Admin-spezifische Styles für Kritzelcraft */
+
+.admin-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.login-viewport {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
